@@ -1,10 +1,38 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/today">Today's Weather</router-link> |
+    <router-link to="/fiveDay">Five Day Forecast</router-link>
+    <div class="home">
+      <input type="text" v-model="location" placeholder="Enter Zip Code or City Name" @input="search" />
+    </div>
   </nav>
   <router-view/>
 </template>
+
+<script>
+  import { useWeatherStore } from '@/stores/weather.js'
+  import { ref } from 'vue'
+  import debounce from 'lodash/debounce'
+  export default {
+    setup () {
+      const weatherStore = useWeatherStore()
+      const location = ref('')
+      
+      const search = debounce(async () => {
+        if (location.value.length < 5) return
+        let data = await weatherStore.fetchWeather(location.value)
+        .then((data) => {
+          console.log(data)
+        })
+      }, 500)
+      
+      return {
+        location,
+        search
+      }
+    }
+  }
+  </script>
 
 <style>
 #app {
