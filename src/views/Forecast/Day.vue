@@ -23,9 +23,10 @@
     },
     setup(props) {
       const dayName = computed(() => {
-        if (props.day && props.day.date){
+        if (props.day.date){
           let day = new Date(props.day.date).getDay();
-          let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+          console.log(day)
+          let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
           return days[day];
         }
         return '';
