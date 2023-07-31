@@ -1,7 +1,6 @@
 <template>
-  <v-card outlined>
-    <v-card-title>{{ dayName }}</v-card-title>
-    <v-card-subtitle>{{ day.date }}</v-card-subtitle>
+  <v-card outlined :style="{ width: '150px', flexShrink: 0}">
+    <v-card-title>{{ dayName }} <br> {{ dateString }}</v-card-title>
     <v-card-text>
       <div v-if="celsius">
         <div>High {{ Math.trunc(day.day.maxtemp_c) }}°C</div>
@@ -40,10 +39,16 @@ export default {
     const dayName = computed(() => {
       if (props.day && props.day.date){
         let day = new Date(props.day.date).getDay();
-        let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         return days[day];
       }
       return '';
+    })
+
+    const dateString = computed(() => {
+      const date = new Date(props.day.date);
+      const options = { month: 'long', day: 'numeric' };
+      return date.toLocaleDateString(undefined, options);
     })
 
     // Watching celsius prop
@@ -57,8 +62,9 @@ export default {
     })
 
     return {
-      dayName, celsius, fahrenheit
+      dayName, celsius, fahrenheit, dateString
     }
   } 
 }
 </script>
+

@@ -3,30 +3,41 @@
     <v-row>
       <v-col class="text-center">
         <h1>Five Day Forecast</h1>
-        <v-card v-if="weather">
-          <v-card-title>
-            <h2>{{ weather.location.name }}, {{ weather.location.region }}</h2>
-          </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col 
-                v-for="day in weather.forecast.forecastday" 
-                :key="day.date" 
-                cols="12" xs ="6" sm="2" 
-                class="d-flex justify-center"
-              >
-                <Day :day="day" />
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <h2 
+          v-if="weather">
+          {{ weather.location.name }}, {{ weather.location.region }}
+        </h2>
         <v-card v-else>
           <v-card-text>
             <p>Loading weather data...</p>
           </v-card-text>
         </v-card>
       </v-col>
+    </v-row>  
+          
+    <v-row
+      class="d-flex justify-center align-center"
+    >
+      
+      <v-col 
+        v-if="weather"
+        v-for="day in weather.forecast.forecastday" 
+        :key="day.date" 
+        cols="12" xs ="6" sm="2" 
+        class="d-flex justify-center align-center"
+      >
+        <Day :day="day" />
+      </v-col>
+      <v-col v-else>
+        <v-card-text>
+          <p>Loading weather data...</p>
+        </v-card-text>
+      </v-col>
     </v-row>
+          
+        
+        
+      
   </v-container>
 </template>
 
