@@ -6,22 +6,36 @@ Copy code
       <v-card-title class="headline justify-center align-center text-center blue--text text-h4 text-md-h2 text-lg-h2 text-wrap pa-5">{{ weather.location.name }}, {{ weather.location.region }}</v-card-title>
       <v-card-text>
         <v-container v-if="weather">
-          <v-row v-if="celsius" class="blue--text">
-            <v-col class="text-h3 text-md-h2 text-lg-h1">{{ Math.trunc(weather.current.temp_c) }}°C</v-col>
-            <v-col class="text-h4 text-md-3">Feels Like: {{ Math.trunc(weather.current.feelslike_c)}}°C </v-col>
-            <v-col class="text-h5 text-md-h4 text-lg-h4">Today's High: {{ Math.trunc(weather.forecast.forecastday[0].day.maxtemp_c) }} °C</v-col>
-            <v-col class="text-h5 text-md-h4 text-lg-h4">Today's Low: {{ Math.trunc(weather.forecast.forecastday[0].day.mintemp_c) }} °C</v-col>
+        
+          <v-row justify="center" class="blue--text">
+            <v-col md="4" class="text-h3 text-md-h2 text-lg-h1 font-weight-bold">{{ fahrenheit ? Math.trunc(weather.current.temp_f) + '°F' : Math.trunc(weather.current.temp_c) + '°C' }}</v-col>
+           
           </v-row>
-          <v-row v-else class="blue--text">
-            <v-col class="text-h3 text-md-h2 text-lg-h1">{{ Math.trunc(weather.current.temp_f) }}°F</v-col>
-            <v-col class="text-h4 text-md-3">Feels Like: {{ Math.trunc(weather.current.feelslike_f)}}°F </v-col>
-            <v-col class="text-h5 text-md-h4 text-lg-h4">Today's High: {{ Math.trunc(weather.forecast.forecastday[0].day.maxtemp_f) }} °F</v-col>
-            <v-col class="text-h5 text-md-h4 text-lg-h4">Today's Low: {{ Math.trunc(weather.forecast.forecastday[0].day.mintemp_f) }} °F</v-col>
-          </v-row>
-          <v-row align="center" justify="center" class="blue--text">
+          <v-row justify="center" align="center" class="blue--text">
+            <v-col md="4" class="text-h5 text-md-h4">Feels Like: {{ fahrenheit ? Math.trunc(weather.current.feelslike_f) +'°F' : Math.trunc(weather.current.feelslike_c) + '°C' }}</v-col>
+            </v-row>
+          <v-row justify="center" align="center" class="blue--text">
             <v-img class="weather-icon" :src="weather.current.condition.icon" :alt="weather.current.condition.text" />
-            <v-col class="text-h5 text-md-h4 text-lg-h4">{{ weather.current.condition.text }}</v-col>
-            <v-col class="text-h5 text-md-h4 text-lg-h4">Humidity: {{ weather.current.humidity }}%</v-col>
+          </v-row>
+          <v-row justify="center" align="center" class="blue--text">
+            <v-col md="8" class="text-h4 text-md-h3 text-lg-h2 font-weight-bold">{{ weather.current.condition.text }}</v-col>
+          </v-row>
+          <v-row justify="center" align="center" class="blue--text ">
+            
+            <v-col md="8" class="text-h5 text-md-h4 text-lg-h4">Chance of Rain: {{ weather.forecast.forecastday[0].day.daily_chance_of_rain }}%
+            </v-col>
+            
+          </v-row>
+          <v-row justify="center" align="center" class="blue--text">
+          
+            <v-col md="6" class="text-h5 text-md-h4 text-lg-h4">Today's High: {{ fahrenheit ? Math.trunc(weather.forecast.forecastday[0].day.maxtemp_f) + '°F' : Math.trunc(weather.forecast.forecastday[0].day.maxtemp_c) + '°C'}}</v-col>
+            <v-col md="6" class="text-h5 text-md-h4 text-lg-h4">Today's Low: {{ fahrenheit ? Math.trunc(weather.forecast.forecastday[0].day.mintemp_f) + '°F': Math.trunc(weather.forecast.forecastday[0].day.mintemp_c) + '°C' }}</v-col>
+          </v-row>
+          
+          <v-row justify="center">
+            <v-col md="6" class="text-h5 text-md-h4 text-lg-h4">Wind: {{ weather.current.wind_dir }} {{  weather.current.wind_mph }} mph </v-col>
+            
+            <v-col md="6" class="text-h5 text-md-h4 text-lg-h4">Humidity: {{ weather.current.humidity }}%</v-col>
           </v-row>
         </v-container>
         <v-progress-circular v-else indeterminate color="blue"></v-progress-circular>
@@ -77,6 +91,7 @@ export default {
     const weather = computed(() => weatherStore.getWeather)
     // console.log(weather)
     const celsius = computed(() => weatherStore.getCelsius)
+    const fahrenheit = computed(() => weatherStore.getFahrenheit)
 
     watch(weather, (newVal) => {
       
@@ -87,7 +102,8 @@ export default {
 
     return {
       weather,
-      celsius
+      celsius,
+      fahrenheit
     }
   },
   components: {
@@ -135,7 +151,6 @@ export default {
 .weather-icon {
   width: 150px;
   height: 150px;
-  margin-right: 10px;
 }
 .overflow-auto {
   overflow-x: auto;
