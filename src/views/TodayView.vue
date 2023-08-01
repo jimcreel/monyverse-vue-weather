@@ -8,9 +8,9 @@ Copy code
         <v-container v-if="weather">
           <v-row v-if="celsius" class="blue--text">
             <v-col class="text-h3 text-md-h2 text-lg-h1">{{ Math.trunc(weather.current.temp_c) }}°C</v-col>
-            <v-col class="text-h5 text-md-h4 text-lg-h3">Feels Like: {{ Math.trunc(weather.current.feelslike_c)}}°C </v-col>
-            <v-col class="text-h5 text-md-h3 text-lg-h2">Today's High: {{ Math.trunc(weather.forecast.forecastday[0].day.maxtemp_c) }} °C</v-col>
-            <v-col class="text-h5 text-md-h3 text-lg-h2">Today's Low: {{ Math.trunc(weather.forecast.forecastday[0].day.mintemp_c) }} °C</v-col>
+            <v-col class="text-h4 text-md-3">Feels Like: {{ Math.trunc(weather.current.feelslike_c)}}°C </v-col>
+            <v-col class="text-h5 text-md-h4 text-lg-h4">Today's High: {{ Math.trunc(weather.forecast.forecastday[0].day.maxtemp_c) }} °C</v-col>
+            <v-col class="text-h5 text-md-h4 text-lg-h4">Today's Low: {{ Math.trunc(weather.forecast.forecastday[0].day.mintemp_c) }} °C</v-col>
           </v-row>
           <v-row v-else class="blue--text">
             <v-col class="text-h3 text-md-h2 text-lg-h1">{{ Math.trunc(weather.current.temp_f) }}°F</v-col>
