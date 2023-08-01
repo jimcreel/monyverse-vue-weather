@@ -1,17 +1,23 @@
 <template>
     <v-card v-if="currentEpoch <= hour.time_epoch" outlined>
         <v-card-title class="text-center">
-            {{ hour.time }}
+            {{ time }}
         </v-card-title>
-        <v-card-text class="text-h6">
+        <v-card-text v-if="!celsius" class="text-h6">
             {{ Math.trunc(hour.temp_f) }}°F
         </v-card-text>
-        <v-img :src="hour.condition.icon" :alt="hour.condition.text" />
-        <v-card-text v-if="!chance_of_snow">
-            Chance of Rain: {{ hour.chance_of_rain }}%
+        <v-card-text v-else class="text-h6">
+            {{ Math.trunc(hour.temp_c) }}°C
         </v-card-text>
-        <v-card-text v-if="hour.will_it_snow">
-            Chance of Snow: {{ hour.chance_of_snow }}%
+        <v-img :src="hour.condition.icon" :alt="hour.condition.text" />
+        <v-card-text>
+            {{ hour.condition.text }}
+        </v-card-text>
+        <v-card-text v-if="!snowChance">
+            Chance of Rain: {{ rainChance }}%
+        </v-card-text>
+        <v-card-text v-if="snowChance">
+            Chance of Snow: {{ snowChance }}%
         </v-card-text>
     </v-card>
 </template>
@@ -20,7 +26,6 @@
 <script>
 import { useWeatherStore } from '@/stores/weather';
 import { computed } from 'vue';
-
 
 
 export default {
@@ -34,6 +39,28 @@ export default {
             type: Number,
             required: true
         }
+    },
+    setup (props) {
+        const weatherStore = useWeatherStore()
+        const snowChance = computed(() => props.hour.will_it_snow)
+        const rainChance = computed(() => props.hour.chance_of_rain)
+        const celsius = computed(() => weatherStore.getCelsius)
+        const fahrenheit = computed(() => weatherStore.getFahrenheit)
+        const time = computed(() => {
+            //console.log(props.hour.time)  // if you need to log, uncomment this line
+            let [dateStr, timeStr] = props.hour.time.split(" ");
+            let [hourStr, minuteStr] = timeStr.split(":");
+            let hourNum = parseInt(hourStr);
+            let period = hourNum >= 12 ? "PM" : "AM";
+            if (hourNum > 12) hourNum -= 12;
+            else if (hourNum === 0) hourNum = 12;
+            let formattedTime = `${hourNum}:${minuteStr} ${period}`;
+            return formattedTime;
+        })
+        return {
+            celsius, fahrenheit, time, snowChance, rainChance
+        }
     }
 }
+
 </script>

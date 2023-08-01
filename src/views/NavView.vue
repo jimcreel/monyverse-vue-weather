@@ -9,14 +9,12 @@
   >
     <v-card-text>
       <v-text-field
-        :loading="loading"
         density="compact"
         variant="solo"
         label="Enter City or ZIP"
         append-inner-icon="mdi-magnify"
         single-line
         hide-details
-        @click:append-inner="onClick"
         @keyup.enter="setCity"
         v-model="city"
       ></v-text-field>
@@ -25,8 +23,8 @@
 
         <!-- Add the Celsius and Fahrenheit links here -->
         <div class="temperature-switch">
-        <a @click="setCelsius" href="#">Celsius</a> |
-        <a @click="setFahrenheit" href="#">Fahrenheit</a>
+        <a @click="setCelsius" href="#" :class="{ 'temp-active': celsius }">Celsius</a> |
+        <a @click="setFahrenheit" href="#" :class="{ 'temp-active': fahrenheit }">Fahrenheit</a>
         </div>
     </nav>
     <router-view />
@@ -34,10 +32,12 @@
 
 <script>
     import { useWeatherStore } from '@/stores/weather.js'
-    import { ref, onMounted, watch} from 'vue'
+    import { ref, onMounted, watch, computed} from 'vue'
     export default {
         name: 'Nav',
         setup () {
+            const celsius = computed(() => weatherStore.getCelsius);
+            const fahrenheit = computed(() => weatherStore.getFahrenheit);
             const weatherStore = useWeatherStore()
             const city = ref('')
             const fetchWeather = () => {
@@ -62,7 +62,9 @@
             city,
             setCelsius,
             setFahrenheit,
-            setCity
+            setCity,
+            celsius,
+            fahrenheit
             }
         }
     }
@@ -90,10 +92,14 @@
     color: #42b983;
     }
 
-
+    
     .temperature-switch a {
     margin-left: 10px;
     margin-right: 10px;
+    }
+
+    .temperature-switch a.temp-active {
+        color: #42b983;
     }
 </style>
 
