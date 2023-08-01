@@ -23,7 +23,7 @@
         v-if="weather"
         v-for="day in weather.forecast.forecastday" 
         :key="day.date" 
-        cols="12" xs ="6" sm="2" 
+        cols="12" xs ="6" sm="3" md="2" lg="2" xl="2"
         class="d-flex justify-center align-center"
       >
         <Day :day="day" />
