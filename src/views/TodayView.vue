@@ -1,36 +1,54 @@
 <template>
-  <v-card>
-    <v-card-title class="headline">Weather</v-card-title>
+  <v-container max-width="800">
+  <v-card v-if="weather" class="mx-auto weather-card pa-4"  color="light-blue lighten-5">
+    <v-card-title class="headline justify-center text-center blue--text">{{ weather.location.name }}, {{ weather.location.region }}</v-card-title>
     <v-card-text>
-      <div v-if="weather">
-        <h2>{{ weather.location.name }}, {{ weather.location.region }}</h2>
-        <div v-if="celsius">
-          <p>Current Temperature: {{ Math.trunc(weather.current.temp_c) }} °C</p>
-          <p>Feels Like: {{ Math.trunc(weather.current.feelslike_c)}}°C </p>
-          <p>Today's High: {{ Math.trunc(weather.forecast.forecastday[0].day.maxtemp_c) }} °C</p>
-          <p>Today's Low: {{ Math.trunc(weather.forecast.forecastday[0].day.mintemp_c) }} °C</p>
-          
-        </div>
-        <div v-else>
-          <p>Current Temperature: {{ Math.trunc(weather.current.temp_f) }} °F</p>
-          <p>Feels Like: {{ Math.trunc(weather.current.feelslike_f)}}°F </p>
-          <p>Today's High: {{ Math.trunc(weather.forecast.forecastday[0].day.maxtemp_f) }} °F</p>
-          <p>Today's Low: {{ Math.trunc(weather.forecast.forecastday[0].day.mintemp_f) }} °F</p>
-          
-        </div>
-        <v-img class="small-image" :src="weather.current.condition.icon" :alt="weather.current.condition.text" />
-        <p>Humidity: {{ weather.current.humidity }}%</p>
-      </div>
-      <div v-else>
-        <p>Loading weather data...</p>
-      </div>
+      <v-container v-if="weather">
+        <v-row v-if="celsius" class="blue--text">
+          <v-col class="text-h1">{{ Math.trunc(weather.current.temp_c) }}°C</v-col>
+          <v-col class="text-h5">Feels Like: {{ Math.trunc(weather.current.feelslike_c)}}°C </v-col>
+          <v-col>Today's High: {{ Math.trunc(weather.forecast.forecastday[0].day.maxtemp_c) }} °C</v-col>
+          <v-col>Today's Low: {{ Math.trunc(weather.forecast.forecastday[0].day.mintemp_c) }} °C</v-col>
+        </v-row>
+        <v-row v-else class="blue--text">
+          <v-col class="text-h1 ">{{ Math.trunc(weather.current.temp_f) }}°F</v-col>
+          <v-col class="text-h5">Feels Like: {{ Math.trunc(weather.current.feelslike_f)}}°F </v-col>
+          <v-col>Today's High: {{ Math.trunc(weather.forecast.forecastday[0].day.maxtemp_f) }} °F</v-col>
+          <v-col>Today's Low: {{ Math.trunc(weather.forecast.forecastday[0].day.mintemp_f) }} °F</v-col>
+        </v-row>
+        <v-row align="center" justify="center" class="blue--text">
+          <v-img class="weather-icon" :src="weather.current.condition.icon" :alt="weather.current.condition.text" />
+          <v-col>Humidity: {{ weather.current.humidity }}%</v-col>
+        </v-row>
+      </v-container>
+      <v-progress-circular v-else indeterminate color="blue"></v-progress-circular>
     </v-card-text>
   </v-card>
+  <v-row max-width="70">
+    <v-card-title class="text-h4">Hourly Forecast</v-card-title>
+    <v-btn icon @click="scroll(-1)">
+      <v-icon icon="mdi-chevron-double-left"></v-icon>
+    </v-btn>
+    <div v-if="weather" ref="scroller" class="d-flex flex-nowrap overflow-auto">
+      <v-col cols="auto" v-for="(hour, index) in weather.forecast.forecastday[0].hour" :key="index" class="px-2">
+        <Hour :hour="hour" :currentEpoch="weather.current.last_updated_epoch" />
+      </v-col>
+    </div>
+    <v-btn icon @click="scroll(1)">
+      <v-icon icon="mdi-chevron-right"></v-icon>
+    </v-btn>
+  </v-row>
+  </v-container>
+
+
+
 </template>
+
 
 <script>
 import { useWeatherStore } from '@/stores/weather.js'
 import { watch, computed } from 'vue'
+import Hour from './Forecast/Hour.vue'
 
 export default {
   name: 'TodayView',
@@ -38,7 +56,7 @@ export default {
     const weatherStore = useWeatherStore()
 
     const weather = computed(() => weatherStore.getWeather)
-    // console.log(weather.value)
+    console.log(weather)
     const celsius = computed(() => weatherStore.getCelsius)
 
     watch(weather, (newVal) => {
@@ -53,12 +71,54 @@ export default {
       celsius
     }
   },
+  components: {
+    Hour
+  }, 
+  methods: {
+    scroll(direction) {
+        let container = this.$refs.scroller;
+        let scrollAmount = 0;
+        let slideTimer = setInterval(function(){
+            if(direction == 1){
+                container.scrollLeft += 10;
+            } else {
+                container.scrollLeft -= 10;
+            }
+            scrollAmount += 10;
+            if(scrollAmount >= 100){
+                window.clearInterval(slideTimer);
+            }
+        }, 25);
+      }
+}
 }
 </script>
 
 <style scoped>
-.small-image {
-  width: 50px !important;
-  height: 50px !important;
+.weather-card {
+  background-color: #f7f8fa;
+  border-radius: 10px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.temperature-section {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.weather-icon {
+  width: 150px;
+  height: 150px;
+  margin-right: 10px;
+}
+.overflow-auto {
+  overflow-x: auto;
+}
+.scrollable-row {
+  overflow-x: auto;
+  width: 100%;
 }
 </style>
