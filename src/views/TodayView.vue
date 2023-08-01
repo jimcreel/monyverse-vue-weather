@@ -3,7 +3,7 @@ Copy code
 <template>
   <v-container>
     <v-card v-if="weather" class="mx-auto weather-card pa-10 my-10"  color="light-blue lighten-5">
-      <v-card-title class="headline justify-center align-center text-center blue--text text-h4 text-md-h2 text-lg-h2 text-wrap pa-5">{{ weather.location.name }}, {{ weather.location.region }}</v-card-title>
+      <v-card-title style="word-break: break-word" class="headline justify-center align-center text-center blue--text text-h4 text-md-h2 text-lg-h2 text-wrap pa-5">{{ weather.location.name }}</v-card-title>
       <v-card-text>
         <v-container v-if="weather">
         
