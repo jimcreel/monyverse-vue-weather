@@ -54,26 +54,28 @@ Copy code
     </v-card-text>
 
     <v-container class="pa-0" fluid>
-      <v-row no-gutters>
-        <v-col cols="12" md="8" lg="20" class="mx-auto">
-          <v-row align="center" no-gutters>
-            <v-col cols="auto">
-              
+  <v-row no-gutters class="justify-start">
+    <v-col cols="12" md="8" lg="20" class="mx-auto">
+      <v-row align="center" no-gutters>
+        <v-col cols="auto">
+          
+        </v-col>
+        <v-col>
+          <div v-if="weather" ref="scroller" class="d-flex flex-nowrap overflow-auto">
+            <v-col  cols="auto" v-for="(hour, index) in weather.forecast.forecastday[0].hour" :key="index" class="px-2">
+              <Hour v-show="weather.current.last_updated_epoch <= hour.time_epoch" :hour="hour"  />
             </v-col>
-            <v-col>
-              <div v-if="weather" ref="scroller" class="d-flex flex-nowrap overflow-auto">
-                <v-col cols="auto" v-for="(hour, index) in weather.forecast.forecastday[0].hour" :key="index" class="px-2">
-                  <Hour :hour="hour" :currentEpoch="weather.current.last_updated_epoch" />
-                </v-col>
-              </div>
-            </v-col>
-            <v-col cols="auto">
-              
-            </v-col>
-          </v-row>
+          </div>
+        </v-col>
+        <v-col cols="auto">
+          
         </v-col>
       </v-row>
-    </v-container>
+    </v-col>
+  </v-row>
+</v-container>
+
+
   </v-container>
 </template>
 

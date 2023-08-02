@@ -1,5 +1,5 @@
 <template>
-    <v-card v-if="currentEpoch <= hour.time_epoch" outlined>
+    <v-card outlined>
         <v-card-title class="text-center">
             {{ time }}
         </v-card-title>
