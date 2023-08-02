@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent, ref } from "vue";
 import Hour from "./Hour.vue";
 import { WeatherData, HourData } from "@/types/Types";
 import { PropType } from "vue";

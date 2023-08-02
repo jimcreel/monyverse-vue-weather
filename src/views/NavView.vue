@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch, computed } from 'vue';
+import { defineComponent, ref, onMounted, computed } from 'vue';
 import { useWeatherStore } from '@/stores/weather';
 
 export default defineComponent({
@@ -48,9 +48,12 @@ export default defineComponent({
     }
 
     // on submit of the search bar, set the city
+    // on submit of the search bar, set the city
     const setCity = () => {
-      weatherStore.setCity(city.value);
+      let cleanCity = city.value.replace(/[^a-zA-Z0-9 ]/g, ""); // This regex pattern matches non-alphanumeric characters and replace them with an empty string
+      weatherStore.setCity(cleanCity.trim()); 
     }
+
 
     // toggle for C/F
     const setCelsius = () => {

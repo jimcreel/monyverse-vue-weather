@@ -136,5 +136,6 @@ export interface Astro {
     celsius: boolean;
     fahrenheit: boolean;
     hours: HourData[];
+    error: string;
   }
   

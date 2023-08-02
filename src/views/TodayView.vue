@@ -2,7 +2,7 @@
   <!-- establishes the main current weather card-->
   <v-container>
     <DayCurrentView v-if="weather" :weather="weather" :fahrenheit="fahrenheit"/>
-    <FiveDayView />
+    <FiveDayView v-if="weather" :weather="weather" :fahrenheit="fahrenheit"/>
     <HourlyView v-if="weather" :weather="weather" :hours="hours" :fahrenheit="fahrenheit" :celsius="celsius" :scroll="scroll" :scroller="scroller"/>
 
   </v-container>

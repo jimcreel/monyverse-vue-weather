@@ -6,7 +6,7 @@
         <h1>Five Day Forecast</h1>
         <h2 
           v-if="weather">
-          {{ weather.location.name }}, {{ weather.location.region }}
+          {{ weather.location.name }}{{ weather.location.region.length ? ', ' + weather.location.region : '' }}
         </h2>
         <v-card v-else>
           <v-progress-circular indeterminate color="blue"></v-progress-circular>
@@ -36,8 +36,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch } from 'vue'
-import { useWeatherStore } from '@/stores/weather'
+import { defineComponent } from 'vue'
 import DayView from './DayView.vue'
 import { WeatherData } from '@/types/Types' 
 export default defineComponent({
@@ -45,19 +44,10 @@ export default defineComponent({
     components: {
         DayView
     },
-    setup() {
-        const weatherStore = useWeatherStore()
-        const weather = computed<WeatherData | null>(() => weatherStore.getWeather)
-
-        watch(weather, (newVal: WeatherData | null) => {
-            
-        }, {
-            deep: true,
-            immediate: true
-        })
-
-        return {
-            weather
+    props: {
+        weather: {
+            type: Object as () => WeatherData | null,
+            required: false
         }
     },
 })
