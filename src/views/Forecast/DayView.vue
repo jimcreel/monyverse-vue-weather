@@ -3,7 +3,7 @@
       
     <v-card outlined color="light-blue lighten-5" class="pa-5 m d-flex flex-column fill-height">
     
-    <v-card-title class="text-h5 text-md-h4">
+    <v-card-title class="text-h5 text-md-h4 font-weight-bold">
       <div class="pb-2">{{ dateString }}</div>
       <div>{{ dayName }}</div>
     </v-card-title>
