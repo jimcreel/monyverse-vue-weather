@@ -2,14 +2,8 @@
   <v-card outlined :style="{ width: '150px', flexShrink: 0}">
     <v-card-title>{{ dayName }} <br> {{ dateString }}</v-card-title>
     <v-card-text>
-      <div v-if="celsius">
-        <div>High {{ Math.trunc(day.day.maxtemp_c) }}°C</div>
-        <div>Low: {{ Math.trunc(day.day.mintemp_c) }}°C</div>
-      </div>
-      <div v-else>
-        <div>High {{ Math.trunc(day.day.maxtemp_f) }}°F</div>
-        <div>Low: {{ Math.trunc(day.day.mintemp_f) }}°F</div>
-      </div>
+        <div>High: {{ fahrenheit ? Math.trunc(day.day.maxtemp_f) + '°F' : Math.trunc(day.day.maxtemp_c) + '°C'}}</div>
+        <div>Low: {{ fahrenheit ? Math.trunc(day.day.mintemp_f) + '°F' : Math.trunc(day.day.mintemp_c) + '°C'}}</div>
       <div>Humidity: {{ day.day.avghumidity }}%</div>
       <v-img :src="day.day.condition.icon" :alt="day.day.condition.text" />
       <div>Chance of Rain: {{ day.day.daily_chance_of_rain }}%</div>
@@ -37,23 +31,40 @@ export default defineComponent({
     
     // converts Date getDay to day of the week
     const dayName = computed(() => {
-      if (props.day && props.day.date){
-        let day = new Date(props.day.date).getDay();
+      if (props.day && props.day.date) {
+        let parts = props.day.date.split("-");
+        let year = parseInt(parts[0], 10);
+        let month = parseInt(parts[1], 10) - 1;
+        let day = parseInt(parts[2], 10);
+        let date = new Date(year, month, day);
+
+        // Get the day of the week
+        let dayOfWeek = date.getDay();
         let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        return days[day];
+
+        return days[dayOfWeek];
       }
       return '';
-    })
+    });
+
+
 
     const dateString = computed(() => {
       //return the short month and day
-      if (props.day && props.day.date){
-        let date = new Date(props.day.date);
-        let month = date.toLocaleString('default', { month: 'short' });
-        let day = date.getDate();
-        return `${month} ${day}`;
+      if (props.day && props.day.date) {
+        let parts = props.day.date.split("-");
+        let year = parseInt(parts[0], 10);
+        let month = parseInt(parts[1], 10) - 1;
+        let day = parseInt(parts[2], 10);
+        let date = new Date(year, month, day);
+        // Get the short month and day
+        let shortMonth = date.toLocaleString('default', { month: 'short' });
+        let dateDay = date.getDate();
+
+        return `${shortMonth} ${dateDay}`;
       }
-    })
+    });
+
 
     // Watching celsius prop
     watch(celsius, (newVal, oldVal) => {
