@@ -1,4 +1,5 @@
 <template>
+  <v-card v-if="weather" class="mx-auto weather-card pa-10 my-10"  color="blue lighten-5">
   <v-container color="blue--text" fluid>
     <v-row>
       <v-col class="text-center">
@@ -30,6 +31,7 @@
       </v-col>
     </v-row>
   </v-container>
+</v-card>
 </template>
 
 <script lang="ts">

@@ -1,7 +1,7 @@
 <template>
   <!-- establishes the main current weather card-->
   <v-container>
-    <v-card v-if="weather" class="mx-auto weather-card pa-10 my-10"  color="light-blue lighten-5">
+    <v-card v-if="weather" class="mx-auto weather-card pa-10 my-10"  color="blue lighten-5">
       <v-card-title style="word-break: break-word" class="headline justify-center align-center text-center blue--text text-h4 text-md-h2 text-lg-h2 text-wrap pa-5">{{ weather.location.name }}</v-card-title>
       <v-card-text>
         <v-container v-if="weather">
@@ -41,7 +41,7 @@
         <v-progress-circular v-else indeterminate color="blue"></v-progress-circular>
       </v-card-text>
     </v-card>
-    <v-card color="light-blue lighten-5"></v-card>
+    <v-card color="blue lighten-5">
     <v-card-text class="d-flex flex-row align-center justify-center hourly">
       
       <v-btn icon @click="scroll(-1)">
@@ -81,7 +81,7 @@
         </v-col>
       </v-row>
   </v-container>
-
+</v-card>
 
   </v-container>
 </template>
