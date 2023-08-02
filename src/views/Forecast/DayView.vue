@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { useWeatherStore } from '@/stores/weather'
-import { defineComponent, computed, ref, watch } from 'vue'
+import { defineComponent, computed, watch } from 'vue'
 import { ForecastDay } from "@/types/Types";
 
 export default defineComponent({
@@ -34,7 +34,8 @@ export default defineComponent({
     const weatherStore = useWeatherStore()
     const celsius = computed(() => weatherStore.getCelsius)
     const fahrenheit = computed(() => weatherStore.getFahrenheit)
-
+    
+    // converts Date getDay to day of the week
     const dayName = computed(() => {
       if (props.day && props.day.date){
         let day = new Date(props.day.date).getDay();

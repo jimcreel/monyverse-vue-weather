@@ -8,9 +8,7 @@
           {{ weather.location.name }}, {{ weather.location.region }}
         </h2>
         <v-card v-else>
-          <v-card-text>
-            <p>Loading weather data...</p>
-          </v-card-text>
+          <v-progress-circular indeterminate color="blue"></v-progress-circular>
         </v-card>
       </v-col>
     </v-row>  
@@ -28,9 +26,7 @@
         <DayView :day="day" />
       </v-col>
       <v-col v-else>
-        <v-card-text>
-          <p>Loading weather data...</p>
-        </v-card-text>
+        <v-progress-circular indeterminate color="blue"></v-progress-circular>
       </v-col>
     </v-row>
   </v-container>

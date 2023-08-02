@@ -3,28 +3,28 @@
         <router-link to="/today">Today's Weather</router-link> |
         <router-link to="/fiveDay">Five Day Forecast</router-link>
         <v-card
-    class="mx-auto"
-    color="grey-lighten-3"
-    max-width="400"
-  >
-    <v-card-text>
-      <v-text-field
-        density="compact"
-        variant="solo"
-        label="Enter City or ZIP"
-        append-inner-icon="mdi-magnify"
-        single-line
-        hide-details
-        @keyup.enter="setCity"
-        v-model="city"
-      ></v-text-field>
-    </v-card-text>
-  </v-card>
+            class="mx-auto"
+            color="grey-lighten-3"
+            max-width="400"
+        >
+            
+            <!-- a vuetify library search component -->
+            <v-text-field
+                density="compact"
+                variant="solo"
+                label="Enter City or ZIP"
+                append-inner-icon="mdi-magnify"
+                single-line
+                hide-details
+                @keyup.enter="setCity"
+                v-model="city"
+            ></v-text-field>
+            
+        </v-card>
 
-        <!-- Add the Celsius and Fahrenheit links here -->
         <div class="temperature-switch">
-        <a @click="setCelsius" href="#" :class="{ 'temp-active': celsius }">Celsius</a> |
-        <a @click="setFahrenheit" href="#" :class="{ 'temp-active': fahrenheit }">Fahrenheit</a>
+            <a @click="setCelsius" href="#" :class="{ 'temp-active': celsius }">Celsius</a> |
+            <a @click="setFahrenheit" href="#" :class="{ 'temp-active': fahrenheit }">Fahrenheit</a>
         </div>
     </nav>
     <router-view />
@@ -37,19 +37,23 @@ import { useWeatherStore } from '@/stores/weather';
 export default defineComponent({
   name: 'Nav',
   setup () {
+    // retrieve weatherstore and relevant states
     const weatherStore = useWeatherStore();
     const city = ref('');
     const celsius = computed(() => weatherStore.getCelsius);
     const fahrenheit = computed(() => weatherStore.getFahrenheit);
 
+
     const fetchWeather = async () => {
       await weatherStore.fetchWeather(weatherStore.city);
     }
 
+    // on submit of the search bar, set the city
     const setCity = () => {
       weatherStore.setCity(city.value);
     }
 
+    // toggle for C/F
     const setCelsius = () => {
       weatherStore.setCelsius(true);
       weatherStore.setFahrenheit(false);
@@ -60,6 +64,7 @@ export default defineComponent({
       weatherStore.setFahrenheit(true);
     }
 
+    // immediately fetch weather data on mount
     onMounted(() => {
       fetchWeather();
     });

@@ -13,6 +13,7 @@
         <v-card-text>
             {{ hour.condition.text }}
         </v-card-text>
+        <!-- renders snowChance only if <0, but if no snow chance, renders rain chance including 0%-->
         <v-card-text v-if="!snowChance">
             Chance of Rain: {{ rainChance }}%
         </v-card-text>
@@ -25,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue'
 import { useWeatherStore } from '@/stores/weather'
-import { Hour as HourType } from '@/types/Types' // import your Hour type
+import { Hour as HourType } from '@/types/Types'
 
 export default defineComponent({
     name: 'Hour',
@@ -42,7 +43,8 @@ export default defineComponent({
         const celsius = computed(() => weatherStore.getCelsius)
         const fahrenheit = computed(() => weatherStore.getFahrenheit)
         const time = computed(() => {
-            //console.log(props.hour.time)  // if you need to log, uncomment this line
+            // formats time in a 12 hour format
+            // console.log(props.hour.time)
             let [dateStr, timeStr] = props.hour.time.split(" ");
             let [hourStr, minuteStr] = timeStr.split(":");
             let hourNum = parseInt(hourStr);
