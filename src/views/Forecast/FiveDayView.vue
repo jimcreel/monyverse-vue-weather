@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container color="blue--text" fluid>
     <v-row>
       <v-col class="text-center">
         <h1>Five Day Forecast</h1>
@@ -59,3 +59,9 @@ export default defineComponent({
     },
 })
 </script>
+
+<style scoped>
+h1, h2 { 
+  color: #fff;
+}
+</style>

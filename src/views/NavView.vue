@@ -82,6 +82,9 @@ export default defineComponent({
 </script>
 
 <style>
+    nav {
+        background-color: #FFFFFF !important;
+    }
     #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

@@ -41,8 +41,8 @@
         <v-progress-circular v-else indeterminate color="blue"></v-progress-circular>
       </v-card-text>
     </v-card>
-    
-    <v-card-text class="d-flex flex-row align-center justify-center">
+    <v-card color="light-blue lighten-5"></v-card>
+    <v-card-text class="d-flex flex-row align-center justify-center hourly">
       
       <v-btn icon @click="scroll(-1)">
           <v-icon>mdi-chevron-left</v-icon>
@@ -146,7 +146,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.hourly {
+  color: #FFFFFF;
+}
+body{
+  background-color: #f7f8fa;
+}
 .headline {
   line-height: 3;
 }
