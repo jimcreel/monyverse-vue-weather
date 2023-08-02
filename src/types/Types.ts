@@ -76,7 +76,7 @@ export interface Astro {
     localtime: string;
   }
   
-  export interface Hour {
+  export interface HourData{
     time_epoch: number;
     time: string;
     temp_c: number;
@@ -117,7 +117,7 @@ export interface Astro {
     date_epoch: number;
     day: Day
     astro: Astro
-    hour: Hour[];
+    hour: HourData[];
   }
   
   export interface Forecast {
@@ -135,6 +135,6 @@ export interface Astro {
     city: string;
     celsius: boolean;
     fahrenheit: boolean;
-    hours: Hour[];
+    hours: HourData[];
   }
   

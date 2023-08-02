@@ -1,5 +1,5 @@
 <template>
-    <v-card outlined>
+    <v-card class="mx-auto weather-card pa-10 my-10"  color="light-blue lighten-5">
         <v-card-title class="text-center">
             {{ time }}
         </v-card-title>
@@ -9,7 +9,7 @@
         <v-card-text v-else class="text-h6">
             {{ Math.trunc(hour.temp_c) }}°C
         </v-card-text>
-        <v-img :src="hour.condition.icon" :alt="hour.condition.text" />
+        <v-img class="weather-icon" :src="hour.condition.icon" :alt="hour.condition.text" />
         <v-card-text>
             {{ hour.condition.text }}
         </v-card-text>
@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue'
 import { useWeatherStore } from '@/stores/weather'
-import { Hour as HourType } from '@/types/Types'
+import { HourData as HourType } from '@/types/Types'
 
 export default defineComponent({
     name: 'Hour',

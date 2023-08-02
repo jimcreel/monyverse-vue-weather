@@ -1,6 +1,6 @@
 <template>
   <v-card v-if="weather" class="mx-auto weather-card pa-10 my-10"  color="blue lighten-5">
-  <v-container color="blue--text" fluid>
+  
     <v-row>
       <v-col class="text-center">
         <h1>Five Day Forecast</h1>
@@ -15,14 +15,15 @@
     </v-row>  
 
     <v-row
-      class="d-flex justify-center align-center"
+      class="d-flex justify-center align-stretch"
     >
       <v-col 
         v-if="weather"
         v-for="day in weather.forecast.forecastday" 
         :key="day.date" 
-        cols="12" xs ="6" sm="3" md="2" lg="2" xl="2"
-        class="d-flex justify-center align-center"
+        cols="12" xs ="8" sm="8" md="8" lg="8" xl="2"
+        
+        
       >
         <DayView :day="day" />
       </v-col>
@@ -30,7 +31,7 @@
         <v-progress-circular indeterminate color="blue"></v-progress-circular>
       </v-col>
     </v-row>
-  </v-container>
+  
 </v-card>
 </template>
 

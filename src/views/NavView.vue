@@ -1,10 +1,9 @@
 <template>
     <nav>
-        <router-link to="/today">Today's Weather</router-link> |
-        <router-link to="/fiveDay">Five Day Forecast</router-link>
+        
         <v-card
             class="mx-auto"
-            color="grey-lighten-3"
+            color="blue-lighten-5"
             max-width="400"
         >
             
@@ -82,15 +81,13 @@ export default defineComponent({
 </script>
 
 <style>
-    nav {
-        background-color: #FFFFFF !important;
-    }
+    
     #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
+    
     }
 
     nav {
@@ -99,11 +96,7 @@ export default defineComponent({
 
     nav a {
     font-weight: bold;
-    color: #2c3e50;
-    }
-
-    nav a.router-link-exact-active {
-    color: #42b983;
+    
     }
 
     
@@ -113,7 +106,7 @@ export default defineComponent({
     }
 
     .temperature-switch a.temp-active {
-        color: #42b983;
+        color: #fff
     }
 </style>
 

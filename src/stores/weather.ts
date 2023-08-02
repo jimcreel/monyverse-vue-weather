@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
-import { WeatherData, WeatherState, Hour } from '../types/Types';
+import { WeatherData, WeatherState, HourData } from '../types/Types';
 
 export const useWeatherStore = defineStore('weather', {
   state: (): WeatherState => ({
@@ -30,11 +30,11 @@ export const useWeatherStore = defineStore('weather', {
       this.weather = response.data as WeatherData;
       // ensures that only the hours after the current time are displayed in the hourly forecast
       if (this.weather?.forecast?.forecastday[0]?.hour && this.weather?.forecast?.forecastday[1]?.hour && this.weather?.current?.last_updated_epoch !== null) {
-        const day1: Hour[] = response.data.forecast.forecastday[0].hour.filter(
-          (hour: Hour) => hour.time_epoch >= response.data.current.last_updated_epoch!
+        const day1: HourData[] = response.data.forecast.forecastday[0].hour.filter(
+          (hour: HourData) => hour.time_epoch >= response.data.current.last_updated_epoch!
         );
-        const day2: Hour[] = response.data.forecast.forecastday[1].hour;
-        const hours: Hour[] = day1.concat(day2);
+        const day2: HourData[] = response.data.forecast.forecastday[1].hour;
+        const hours: HourData[] = day1.concat(day2);
         this.hours = hours;
       }
     },
