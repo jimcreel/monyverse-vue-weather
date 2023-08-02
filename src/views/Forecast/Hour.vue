@@ -22,17 +22,16 @@
     </v-card>
 </template>
 
+<script lang="ts">
+import { defineComponent, computed, PropType } from 'vue'
+import { useWeatherStore } from '@/stores/weather'
+import { Hour as HourType } from '@/types/Types' // import your Hour type
 
-<script>
-import { useWeatherStore } from '@/stores/weather';
-import { computed } from 'vue';
-
-
-export default {
+export default defineComponent({
     name: 'Hour',
     props: {
         hour: {
-            type: Object,
+            type: Object as PropType<HourType>,
             required: true
         }
     },
@@ -57,6 +56,5 @@ export default {
             celsius, fahrenheit, time, snowChance, rainChance
         }
     }
-}
-
+})
 </script>

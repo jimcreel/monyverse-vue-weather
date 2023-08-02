@@ -14,11 +14,10 @@
         </v-card>
       </v-col>
     </v-row>  
-          
+
     <v-row
       class="d-flex justify-center align-center"
     >
-      
       <v-col 
         v-if="weather"
         v-for="day in weather.forecast.forecastday" 
@@ -26,7 +25,7 @@
         cols="12" xs ="6" sm="3" md="2" lg="2" xl="2"
         class="d-flex justify-center align-center"
       >
-        <Day :day="day" />
+        <DayView :day="day" />
       </v-col>
       <v-col v-else>
         <v-card-text>
@@ -34,29 +33,24 @@
         </v-card-text>
       </v-col>
     </v-row>
-          
-        
-        
-      
   </v-container>
 </template>
 
-<script>
-import { useWeatherStore } from '@/stores/weather.js'
-import { watch, computed } from 'vue'
-import Day from './Day.vue'
-
-export default {
+<script lang="ts">
+import { defineComponent, computed, watch } from 'vue'
+import { useWeatherStore } from '@/stores/weather'
+import DayView from './DayView.vue'
+import { WeatherData } from '@/types/Types' 
+export default defineComponent({
     name: 'TodayView',
     components: {
-        Day
+        DayView
     },
     setup() {
         const weatherStore = useWeatherStore()
+        const weather = computed<WeatherData | null>(() => weatherStore.getWeather)
 
-        const weather = computed(() => weatherStore.getWeather)
-
-        watch(weather, (newVal) => {
+        watch(weather, (newVal: WeatherData | null) => {
             
         }, {
             deep: true,
@@ -67,5 +61,5 @@ export default {
             weather
         }
     },
-}
+})
 </script>

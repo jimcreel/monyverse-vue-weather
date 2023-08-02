@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import { useWeatherStore } from '@/stores/weather.js'
+    import { useWeatherStore } from '@/stores/weather'
     import { ref, onMounted, watch, computed} from 'vue'
     export default {
         name: 'Nav',

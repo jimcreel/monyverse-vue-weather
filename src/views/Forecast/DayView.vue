@@ -5,12 +5,10 @@
       <div v-if="celsius">
         <div>High {{ Math.trunc(day.day.maxtemp_c) }}°C</div>
         <div>Low: {{ Math.trunc(day.day.mintemp_c) }}°C</div>
-        
       </div>
       <div v-else>
         <div>High {{ Math.trunc(day.day.maxtemp_f) }}°F</div>
         <div>Low: {{ Math.trunc(day.day.mintemp_f) }}°F</div>
-        
       </div>
       <div>Humidity: {{ day.day.avghumidity }}%</div>
       <v-img :src="day.day.condition.icon" :alt="day.day.condition.text" />
@@ -19,16 +17,16 @@
   </v-card>
 </template>
 
-<script>
-import { useWeatherStore } from '@/stores/weather.js'
-import { BaseTransitionPropsValidators } from 'vue';
-import { watch, computed, ref } from 'vue'
+<script lang="ts">
+import { useWeatherStore } from '@/stores/weather'
+import { defineComponent, computed, ref, watch } from 'vue'
+import { ForecastDay } from "@/types/Types";
 
-export default {
-  name: 'Day',
+export default defineComponent({
+  name: 'DayView',
   props: {
     day: {
-      type: Object,
+      type: Object as () => ForecastDay,
       required: true
     }
   },
@@ -36,6 +34,7 @@ export default {
     const weatherStore = useWeatherStore()
     const celsius = computed(() => weatherStore.getCelsius)
     const fahrenheit = computed(() => weatherStore.getFahrenheit)
+
     const dayName = computed(() => {
       if (props.day && props.day.date){
         let day = new Date(props.day.date).getDay();
@@ -46,9 +45,13 @@ export default {
     })
 
     const dateString = computed(() => {
-      const date = new Date(props.day.date);
-      const options = { month: 'long', day: 'numeric' };
-      return date.toLocaleDateString(undefined, options);
+      //return the short month and day
+      if (props.day && props.day.date){
+        let date = new Date(props.day.date);
+        let month = date.toLocaleString('default', { month: 'short' });
+        let day = date.getDate();
+        return `${month} ${day}`;
+      }
     })
 
     // Watching celsius prop
@@ -65,6 +68,5 @@ export default {
       dayName, celsius, fahrenheit, dateString
     }
   } 
-}
+})
 </script>
-

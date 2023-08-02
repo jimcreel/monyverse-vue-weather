@@ -85,7 +85,7 @@ Copy code
 
 
 <script>
-import { useWeatherStore } from '@/stores/weather.js'
+import { useWeatherStore } from '@/stores/weather.ts'
 import { watch, computed } from 'vue'
 import Hour from './Forecast/Hour.vue'
 
