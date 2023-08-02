@@ -34,10 +34,6 @@ export default {
         hour: {
             type: Object,
             required: true
-        },
-        currentEpoch: {
-            type: Number,
-            required: true
         }
     },
     setup (props) {

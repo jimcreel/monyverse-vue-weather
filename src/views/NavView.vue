@@ -40,10 +40,9 @@
             const fahrenheit = computed(() => weatherStore.getFahrenheit);
             const weatherStore = useWeatherStore()
             const city = ref('')
-            const fetchWeather = () => {
+            const fetchWeather = async () => {
             weatherStore.fetchWeather(weatherStore.city)
             }
-            
             const setCity = () => {
             // console.log('store city', weatherStore.city)
             weatherStore.setCity(city.value)
@@ -57,6 +56,8 @@
             weatherStore.setFahrenheit(true);
             }
             fetchWeather()
+            
+            
 
             return {
             city,

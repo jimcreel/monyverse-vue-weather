@@ -41,6 +41,7 @@ Copy code
         <v-progress-circular v-else indeterminate color="blue"></v-progress-circular>
       </v-card-text>
     </v-card>
+    
     <v-card-text class="d-flex flex-row align-center justify-center">
       <v-btn icon @click="scroll(-1)">
           <v-icon>mdi-chevron-left</v-icon>
@@ -61,10 +62,13 @@ Copy code
           
         </v-col>
         <v-col>
-          <div v-if="weather" ref="scroller" class="d-flex flex-nowrap overflow-auto">
-            <v-col  cols="auto" v-for="(hour, index) in weather.forecast.forecastday[0].hour" :key="index" class="px-2">
+          <div v-if="hours" ref="scroller" class="d-flex flex-nowrap overflow-auto">
+            <v-col  cols="auto" v-for="(hour, index) in hours" :key="index" class="px-2">
               <Hour v-show="weather.current.last_updated_epoch <= hour.time_epoch" :hour="hour"  />
             </v-col>
+          </div>
+          <div v-else>
+            <v-progress-circular indeterminate color="blue"></v-progress-circular>
           </div>
         </v-col>
         <v-col cols="auto">
@@ -88,13 +92,16 @@ import Hour from './Forecast/Hour.vue'
 export default {
   name: 'TodayView',
   setup () {
+    
     const weatherStore = useWeatherStore()
 
     const weather = computed(() => weatherStore.getWeather)
+    const hours = computed(() => weatherStore.getHours)
     // console.log(weather)
     const celsius = computed(() => weatherStore.getCelsius)
     const fahrenheit = computed(() => weatherStore.getFahrenheit)
-
+  
+    // console.log(hours)
     watch(weather, (newVal) => {
       
     }, {
@@ -105,7 +112,8 @@ export default {
     return {
       weather,
       celsius,
-      fahrenheit
+      fahrenheit, 
+      hours
     }
   },
   components: {
@@ -126,7 +134,8 @@ export default {
                 window.clearInterval(slideTimer);
             }
         }, 25);
-      }
+      },
+    
 }
 }
 </script>
