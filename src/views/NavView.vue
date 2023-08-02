@@ -30,45 +30,50 @@
     <router-view />
 </template>
 
-<script>
-    import { useWeatherStore } from '@/stores/weather'
-    import { ref, onMounted, watch, computed} from 'vue'
-    export default {
-        name: 'Nav',
-        setup () {
-            const celsius = computed(() => weatherStore.getCelsius);
-            const fahrenheit = computed(() => weatherStore.getFahrenheit);
-            const weatherStore = useWeatherStore()
-            const city = ref('')
-            const fetchWeather = async () => {
-            weatherStore.fetchWeather(weatherStore.city)
-            }
-            const setCity = () => {
-            // console.log('store city', weatherStore.city)
-            weatherStore.setCity(city.value)
-            }
-            const setCelsius = () => {
-            weatherStore.setCelsius(true);
-            weatherStore.setFahrenheit(false);
-            }
-            const setFahrenheit = () => {
-            weatherStore.setCelsius(false);
-            weatherStore.setFahrenheit(true);
-            }
-            fetchWeather()
-            
-            
+<script lang="ts">
+import { defineComponent, ref, onMounted, watch, computed } from 'vue';
+import { useWeatherStore } from '@/stores/weather';
 
-            return {
-            city,
-            setCelsius,
-            setFahrenheit,
-            setCity,
-            celsius,
-            fahrenheit
-            }
-        }
+export default defineComponent({
+  name: 'Nav',
+  setup () {
+    const weatherStore = useWeatherStore();
+    const city = ref('');
+    const celsius = computed(() => weatherStore.getCelsius);
+    const fahrenheit = computed(() => weatherStore.getFahrenheit);
+
+    const fetchWeather = async () => {
+      await weatherStore.fetchWeather(weatherStore.city);
     }
+
+    const setCity = () => {
+      weatherStore.setCity(city.value);
+    }
+
+    const setCelsius = () => {
+      weatherStore.setCelsius(true);
+      weatherStore.setFahrenheit(false);
+    }
+
+    const setFahrenheit = () => {
+      weatherStore.setCelsius(false);
+      weatherStore.setFahrenheit(true);
+    }
+
+    onMounted(() => {
+      fetchWeather();
+    });
+
+    return {
+      city,
+      setCelsius,
+      setFahrenheit,
+      setCity,
+      celsius,
+      fahrenheit
+    }
+  }
+});
 </script>
 
 <style>

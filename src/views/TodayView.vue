@@ -62,7 +62,7 @@ Copy code
           
         </v-col>
         <v-col>
-          <div v-if="hours" ref="scroller" class="d-flex flex-nowrap overflow-auto">
+          <div v-if="hours && weather" ref="scroller" class="d-flex flex-nowrap overflow-auto">
             <v-col  cols="auto" v-for="(hour, index) in hours" :key="index" class="px-2">
               <Hour v-show="weather.current.last_updated_epoch <= hour.time_epoch" :hour="hour"  />
             </v-col>
@@ -84,60 +84,60 @@ Copy code
 </template>
 
 
-<script>
-import { useWeatherStore } from '@/stores/weather.ts'
-import { watch, computed } from 'vue'
-import Hour from './Forecast/Hour.vue'
+<script lang="ts">
+import { defineComponent, computed, watch, ref } from 'vue';
+import { useWeatherStore } from '@/stores/weather';
+import Hour from './Forecast/Hour.vue';
 
-export default {
+export default defineComponent({
   name: 'TodayView',
-  setup () {
-    
-    const weatherStore = useWeatherStore()
+  components: {
+    Hour,
+  },
+  setup() {
+    const weatherStore = useWeatherStore();
+    const weather = computed(() => weatherStore.getWeather);
+    const hours = computed(() => weatherStore.getHours);
+    const celsius = computed(() => weatherStore.getCelsius);
+    const fahrenheit = computed(() => weatherStore.getFahrenheit);
+    const scroller = ref<HTMLElement | null>(null);
 
-    const weather = computed(() => weatherStore.getWeather)
-    const hours = computed(() => weatherStore.getHours)
-    // console.log(weather)
-    const celsius = computed(() => weatherStore.getCelsius)
-    const fahrenheit = computed(() => weatherStore.getFahrenheit)
-  
-    // console.log(hours)
+
     watch(weather, (newVal) => {
-      
+      // logic here
     }, {
       deep: true,
-      immediate: true
-    })
+      immediate: true,
+    });
+
+    const scroll = (direction: number) => {
+      if (scroller.value){
+      let container = scroller.value;
+      let scrollAmount = 0;
+      let slideTimer = setInterval(function(){
+        if(direction == 1){
+            container.scrollLeft += 10;
+        } else {
+            container.scrollLeft -= 10;
+        }
+        scrollAmount += 10;
+        if(scrollAmount >= 100){
+            window.clearInterval(slideTimer);
+        }
+      }, 25);
+    }
+    }
 
     return {
       weather,
       celsius,
       fahrenheit, 
-      hours
+      hours,
+      scroller,
+      scroll,
     }
   },
-  components: {
-    Hour
-  }, 
-  methods: {
-    scroll(direction) {
-        let container = this.$refs.scroller;
-        let scrollAmount = 0;
-        let slideTimer = setInterval(function(){
-            if(direction == 1){
-                container.scrollLeft += 10;
-            } else {
-                container.scrollLeft -= 10;
-            }
-            scrollAmount += 10;
-            if(scrollAmount >= 100){
-                window.clearInterval(slideTimer);
-            }
-        }, 25);
-      },
-    
-}
-}
+});
 </script>
 
 <style scoped>
