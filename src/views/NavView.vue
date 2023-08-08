@@ -32,6 +32,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from 'vue';
 import { useWeatherStore } from '@/stores/weather';
+import { fetchWeather } from '@/api/api'
 
 export default defineComponent({
   name: 'Nav',
@@ -41,17 +42,15 @@ export default defineComponent({
     const city = ref('');
     const celsius = computed(() => weatherStore.getCelsius);
     const fahrenheit = computed(() => weatherStore.getFahrenheit);
+    const storeCity = computed(() => weatherStore.getCity);
 
 
-    const fetchWeather = async () => {
-      await weatherStore.fetchWeather(weatherStore.city);
-    }
+    fetchWeather(weatherStore, storeCity.value)
 
-    // on submit of the search bar, set the city
-    // on submit of the search bar, set the city
     const setCity = () => {
       let cleanCity = city.value.replace(/[^a-zA-Z0-9 ]/g, ""); // This regex pattern matches non-alphanumeric characters and replace them with an empty string
       weatherStore.setCity(cleanCity.trim()); 
+      fetchWeather(weatherStore, cleanCity)
     }
 
 
@@ -68,7 +67,7 @@ export default defineComponent({
 
     // immediately fetch weather data on mount
     onMounted(() => {
-      fetchWeather();
+      fetchWeather(weatherStore, storeCity.value);
     });
 
     return {
